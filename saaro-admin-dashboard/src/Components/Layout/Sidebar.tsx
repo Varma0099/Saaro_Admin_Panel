@@ -17,7 +17,10 @@ import {
   MapPin,
   Stethoscope,
   ClipboardList,
-  Heart
+  Heart,
+  Brain,
+  Pill,
+  MessageSquare
 } from 'lucide-react';
 
 interface MenuItem {
@@ -36,6 +39,7 @@ interface SubMenuItem {
   path: string;
   badge?: number;
   isActive?: boolean;
+  icon?: React.ComponentType<any>; // Added icon property
 }
 
 interface SidebarProps {
@@ -50,6 +54,7 @@ const ModernSidebar: React.FC<SidebarProps> = ({
   const [expandedItems, setExpandedItems] = useState<string[]>(['doctors', 'appointments']);
 
   const menuItems: MenuItem[] = [
+   
     {
       id: 'dashboard',
       label: 'Dashboard',
@@ -275,7 +280,14 @@ const ModernSidebar: React.FC<SidebarProps> = ({
                 `}
                 onClick={() => handleNavigation(subItem.path)}
               >
-                <span className="text-sm font-medium relative z-10">{subItem.label}</span>
+                <div className="flex items-center">
+                  {subItem.icon && (
+                    <div className="mr-2">
+                      <subItem.icon className="h-4 w-4" />
+                    </div>
+                  )}
+                  <span className="text-sm font-medium relative z-10">{subItem.label}</span>
+                </div>
                 {subItem.badge && (
                   <span className="relative z-10 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center font-medium animate-pulse shadow-sm">
                     {subItem.badge}

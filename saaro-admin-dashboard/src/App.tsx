@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import ModernSidebar from './Components/Layout/Sidebar';
 import StatCard from './Components/UI/Dashboard/StatCard';
@@ -8,7 +7,13 @@ import Patient from './Pages/Patients/PatientsPage';
 import HospitalsPage from './Pages/Hospital/HospitalsPage'; 
 import EMRPage from './Pages/EMR/EMRPage';
 import SurgerySpecialtyPage from './Pages/SurgeryPage/SurgerySpecialtyPage'; 
-import BillingPage from './Pages/Billing&Refund/BillingPage'; 
+import BillingPage from './Pages/Billing&Refund/BillingPage';
+import ContentManagerPage from './Pages/App&Content/ContentManagerPage';
+import LocationManagerPage from './Pages/Locations/LocationManagerPage';
+import AIInsightsPage from './Pages/AIInsights/AIInsightsPage';
+import ReportsPage from './Pages/Reports/ReportsAnalyticsPage';
+import SettingsCompliancePage from './Pages/Settings/SettingsCompliancePage';
+import AuditTrailPage from './Pages/AuditTrail/AuditTrailPage'; // Added Audit Trail import
 
 import {
   Users,
@@ -22,7 +27,13 @@ import {
   User,
   Scissors, 
   CreditCard, 
-  RefreshCw 
+  RefreshCw,
+  FileText,
+  MapPin,
+  Brain,
+  TrendingUp,
+  Shield, // Added for Audit Trail icon
+  Eye // Added for System Logs icon
 } from 'lucide-react';
 import PatientsPage from './Pages/Patients/PatientsPage';
 
@@ -42,6 +53,18 @@ function App() {
       setCurrentPath('/billing');
     } else if (cardName === 'Pending Refunds') { 
       setCurrentPath('/billing/refunds');
+    } else if (cardName === 'Content Pages') {
+      setCurrentPath('/content');
+    } else if (cardName === 'Active Cities') {
+      setCurrentPath('/locations');
+    } else if (cardName === 'AI Prescriptions') {
+      setCurrentPath('/ai-insights');
+    } else if (cardName === 'AI Accuracy') {
+      setCurrentPath('/ai-insights/feedback');
+    } else if (cardName === 'Audit Logs') { // Added Audit Trail card handling
+      setCurrentPath('/audit');
+    } else if (cardName === 'System Changes') { // Added System Changes card handling
+      setCurrentPath('/audit/changes');
     } else {
       alert(`Clicked on ${cardName} card!`);
     }
@@ -136,6 +159,62 @@ function App() {
           color="orange"
           onClick={() => handleCardClick('Pending Refunds')}
         />
+
+        <StatCard
+          title="Content Pages"
+          value={12}
+          icon={FileText}
+          trend={{ value: 2, isPositive: true }}
+          color="indigo"
+          onClick={() => handleCardClick('Content Pages')}
+        />
+
+        <StatCard
+          title="Active Cities"
+          value={3}
+          icon={MapPin}
+          trend={{ value: 1, isPositive: true }}
+          color="purple"
+          onClick={() => handleCardClick('Active Cities')}
+        />
+
+        {/* AI Insights Cards */}
+        <StatCard
+          title="AI Prescriptions"
+          value={234}
+          icon={Brain}
+          trend={{ value: 18, isPositive: true }}
+          color="teal"
+          onClick={() => handleCardClick('AI Prescriptions')}
+        />
+
+        <StatCard
+          title="AI Accuracy"
+          value="94.2%"
+          icon={TrendingUp}
+          trend={{ value: 2.1, isPositive: true }}
+          color="emerald"
+          onClick={() => handleCardClick('AI Accuracy')}
+        />
+
+        {/* Added Audit Trail Cards */}
+        <StatCard
+          title="Audit Logs"
+          value={1542}
+          icon={Shield}
+          trend={{ value: 24, isPositive: true }}
+          color="indigo"
+          onClick={() => handleCardClick('Audit Logs')}
+        />
+
+        <StatCard
+          title="System Changes"
+          value={87}
+          icon={Eye}
+          trend={{ value: 12, isPositive: true }}
+          color="blue"
+          onClick={() => handleCardClick('System Changes')}
+        />
       </div>
 
       {/* Quick Actions Section */}
@@ -148,6 +227,13 @@ function App() {
           <div className="space-y-3">
             <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg border-l-4 border-red-400">
               <div>
+                <p className="font-semibold text-red-800">High Risk AI Case Flagged</p>
+                <p className="text-sm text-red-600">Patient with multiple drug interactions</p>
+              </div>
+              <span className="text-xs text-red-500">1 min ago</span>
+            </div>
+            <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg border-l-4 border-red-400">
+              <div>
                 <p className="font-semibold text-red-800">High Priority Doctor Complaint</p>
                 <p className="text-sm text-red-600">Dr. Smith - Patient care issue</p>
               </div>
@@ -155,10 +241,10 @@ function App() {
             </div>
             <div className="flex items-center justify-between p-3 bg-amber-50 rounded-lg border-l-4 border-amber-400">
               <div>
-                <p className="font-semibold text-amber-800">System Performance Alert</p>
-                <p className="text-sm text-amber-600">High server load detected</p>
+                <p className="font-semibold text-amber-800">AI Prescription Needs Review</p>
+                <p className="text-sm text-amber-600">Low confidence score detected</p>
               </div>
-              <span className="text-xs text-amber-500">5 min ago</span>
+              <span className="text-xs text-amber-500">3 min ago</span>
             </div>
             <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg border-l-4 border-blue-400">
               <div>
@@ -178,6 +264,13 @@ function App() {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-slate-600">API Health</span>
+              <div className="flex items-center">
+                <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                <span className="text-green-600 font-semibold">Operational</span>
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-slate-600">AI Engine</span>
               <div className="flex items-center">
                 <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
                 <span className="text-green-600 font-semibold">Operational</span>
@@ -240,11 +333,9 @@ function App() {
     case currentPath.startsWith('/hospitals'):
       return <HospitalsPage currentPath={currentPath} />;
 
-    
     case currentPath === '/emr':
     case currentPath.startsWith('/emr'):
       return <EMRPage currentPath={currentPath} />;
-
 
     case currentPath === '/surgery':
     case currentPath === '/surgery/specialties':
@@ -252,13 +343,75 @@ function App() {
     case currentPath.startsWith('/surgery'):
       return <SurgerySpecialtyPage currentPath={currentPath} />;
 
-    
     case currentPath === '/billing':
     case currentPath === '/billing/transactions':
     case currentPath === '/billing/refunds':
     case currentPath === '/billing/insurance':
     case currentPath.startsWith('/billing'):
       return <BillingPage currentPath={currentPath} />;
+
+    case currentPath === '/content':
+    case currentPath === '/content/homepage':
+    case currentPath === '/content/about':
+    case currentPath === '/content/services':
+    case currentPath === '/content/faq':
+    case currentPath === '/content/policies':
+    case currentPath === '/content/blog':
+    case currentPath.startsWith('/content'):
+      return <ContentManagerPage currentPath={currentPath} />;
+
+    case currentPath === '/locations':
+    case currentPath === '/locations/cities':
+    case currentPath === '/locations/services':
+    case currentPath === '/locations/pricing':
+    case currentPath.startsWith('/locations'):
+      return <LocationManagerPage currentPath={currentPath} />;
+
+    // AI Insights routing
+    case currentPath === '/ai':
+    case currentPath === '/ai/flag-rules':
+    case currentPath === '/ai/auto-actions':
+    case currentPath === '/ai-insights':
+    case currentPath.startsWith('/ai/'):
+      return <AIInsightsPage currentPath={currentPath} />;
+
+    // Reports & Analytics routing
+    case currentPath === '/reports':
+    case currentPath === '/reports/doctors':
+    case currentPath === '/reports/revenue':
+    case currentPath === '/reports/surgeries':
+    case currentPath === '/reports/appointments':
+    case currentPath === '/reports/claims':
+    case currentPath === '/reports/scheduled':
+    case currentPath.startsWith('/reports'):
+      return <ReportsPage currentPath={currentPath} />;
+
+    // System Settings routing
+    case currentPath === '/settings':
+    case currentPath === '/settings/roles':
+    case currentPath === '/settings/notifications':
+    case currentPath === '/settings/consult':
+    case currentPath === '/settings/platform':
+    case currentPath.startsWith('/settings'):
+      return <SettingsCompliancePage currentPath={currentPath} />;
+
+    // Audit Trail routing - Added new routing logic
+    case currentPath === '/audit':
+    case currentPath === '/audit/logs':
+    case currentPath === '/audit/changes':
+    case currentPath === '/audit/user-activity':
+    case currentPath === '/audit/system-events':
+    case currentPath.startsWith('/audit'):
+      return <AuditTrailPage currentPath={currentPath} />;
+
+    // Security & Logs routing - Now handled by AuditTrailPage
+    case currentPath === '/security':
+    case currentPath === '/security/login-logs':
+    case currentPath === '/security/data-access':
+    case currentPath === '/security/blocked':
+    case currentPath === '/security/audit':
+    case currentPath.startsWith('/security'):
+      return <AuditTrailPage currentPath={currentPath} />;
 
     default:
       return (
@@ -306,7 +459,7 @@ function App() {
             <div className="flex items-center space-x-6">
               <button className="relative p-3 text-slate-500 hover:text-[#49A097] focus:outline-none focus:ring-2 focus:ring-[#49A097] focus:ring-offset-2 rounded-xl bg-white/50 backdrop-blur-sm hover:bg-[#49A097]/10 transition-all duration-300 group">
                 <Bell className="h-6 w-6 group-hover:scale-110 transition-transform duration-200" />
-                <span className="absolute -top-1 -right-1 block h-5 w-5 rounded-full bg-gradient-to-r from-red-500 to-red-600 ring-2 ring-white text-white text-xs font-bold flex items-center justify-center animate-pulse">3</span>
+                <span className="absolute -top-1 -right-1 block h-5 w-5 rounded-full bg-gradient-to-r from-red-500 to-red-600 ring-2 ring-white text-white text-xs font-bold flex items-center justify-center animate-pulse">5</span>
               </button>
 
               <div className="relative">
